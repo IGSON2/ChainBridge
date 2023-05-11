@@ -71,7 +71,7 @@ func createAndStartBridge(t *testing.T, name string, contractsA, contractsB *eth
 	logger := log.Root().New()
 	sysErr := make(chan error)
 	ethACfg := eth.CreateConfig(name, EthAChainId, contractsA, eth.EthAEndpoint)
-	ethA, err := ethChain.InitializeChain(ethACfg, logger.New("relayer", name, "chain", "ethA"), sysErr, nil)
+	ethA, err := ethChain.InitializeChain(ethACfg, logger.New("relayer", name, "chain", "ethA"), sysErr, nil, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -83,7 +83,7 @@ func createAndStartBridge(t *testing.T, name string, contractsA, contractsB *eth
 	}
 
 	ethBCfg := eth.CreateConfig(name, EthBChainId, contractsB, eth.EthBEndpoint)
-	ethB, err := ethChain.InitializeChain(ethBCfg, logger.New("relayer", name, "chain", "ethB"), sysErr, nil)
+	ethB, err := ethChain.InitializeChain(ethBCfg, logger.New("relayer", name, "chain", "ethB"), sysErr, nil, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -217,12 +217,13 @@ func setupGenericTests(t *testing.T, ctx *testContext) {
 // This tests three relayers connected to three chains (2 ethereum, 1 substrate).
 //
 // EthA:
-//  - Native erc20 token
-// Eth B:
-//  - Synthetic erc20 token
-// Substrate:
-//  - Synthetic token (native to chain)
+//   - Native erc20 token
 //
+// Eth B:
+//   - Synthetic erc20 token
+//
+// Substrate:
+//   - Synthetic token (native to chain)
 func Test_ThreeRelayers(t *testing.T) {
 	shared.SetLogger(log.LvlTrace)
 	threshold := 3

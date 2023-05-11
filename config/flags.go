@@ -31,6 +31,12 @@ var (
 		Value: DefaultKeystorePath,
 	}
 
+	CliPasswordFlag = &cli.StringFlag{
+		Name:  "password",
+		Usage: "Password for keystore",
+		Value: "",
+	}
+
 	BlockstorePathFlag = &cli.StringFlag{
 		Name:  "blockstore",
 		Usage: "Specify path for blockstore",

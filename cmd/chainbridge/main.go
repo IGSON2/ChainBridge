@@ -33,6 +33,7 @@ var cliFlags = []cli.Flag{
 	config.ConfigFileFlag,
 	config.VerbosityFlag,
 	config.KeystorePathFlag,
+	config.CliPasswordFlag,
 	config.BlockstorePathFlag,
 	config.FreshStartFlag,
 	config.LatestBlockFlag,
@@ -196,7 +197,7 @@ func run(ctx *cli.Context) error {
 		}
 
 		if chain.Type == "ethereum" {
-			newChain, err = ethereum.InitializeChain(chainConfig, logger, sysErr, m)
+			newChain, err = ethereum.InitializeChain(chainConfig, logger, sysErr, m, cfg.Password)
 		} else if chain.Type == "substrate" {
 			newChain, err = substrate.InitializeChain(chainConfig, logger, sysErr, m)
 		} else {

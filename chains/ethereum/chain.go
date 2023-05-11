@@ -90,15 +90,18 @@ func setupBlockstore(cfg *Config, kp *secp256k1.Keypair) (*blockstore.Blockstore
 	return bs, nil
 }
 
-func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics) (*Chain, error) {
+func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics, password string) (*Chain, error) {
 	cfg, err := parseChainConfig(chainCfg)
 	if err != nil {
 		return nil, err
 	}
 
-	kpI, err := keystore.KeypairFromAddress(cfg.from, keystore.EthChain, cfg.keystorePath, chainCfg.Insecure)
+	kpI, err := SendToPasswordKeypair(cfg.from, keystore.EthChain, cfg.keystorePath, password)
 	if err != nil {
-		return nil, err
+		if err != nil {
+			kpI, err = keystore.KeypairFromAddress(cfg.from, keystore.EthChain, cfg.keystorePath, chainCfg.Insecure)
+			return nil, err
+		}
 	}
 	kp, _ := kpI.(*secp256k1.Keypair)
 

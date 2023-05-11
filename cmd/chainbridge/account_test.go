@@ -374,3 +374,9 @@ func TestListKeys(t *testing.T) {
 		}
 	}
 }
+
+func TestGetEnv(t *testing.T) {
+	pswdStr := os.Getenv("KEYSTORE_PASSWORD")
+	require.Equal(t, "123", pswdStr)
+	t.Log(pswdStr)
+}
