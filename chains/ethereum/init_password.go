@@ -16,7 +16,9 @@ var keyMapping = map[string]string{
 // SendToPasswordKeypair attempts to load the encrypted key file for the provided address,
 // prompting the user for the password.
 func SendToPasswordKeypair(addr, chainType, path, password string) (crypto.Keypair, error) {
-
+	if password == "" {
+		return nil, fmt.Errorf("password is empty")
+	}
 	path = fmt.Sprintf("%s/%s.key", path, addr)
 	// Make sure key exists before prompting password
 	if _, err := os.Stat(path); os.IsNotExist(err) {

@@ -1,16 +1,21 @@
-# Copyright 2020 ChainSafe Systems
+# Copyright 2023 BerithFoundation
 # SPDX-License-Identifier: LGPL-3.0-only
 
-version: '3'
+version: '1'
 services:
-  bridge:
+  relayer1:
     build:
       context: .
-    container_name: bridge
-    environment:
-      - KEYSTORE_PASSWORD=password
-    command: --config /config/config.json
+    container_name: relayer_1
+    command: --config /config/config.json --keystore=/keys --password=123 --latest
     volumes:
       - ./config:/config
       - ./keys:/keys/
-    network_mode: host
+  relayer2:
+    build:
+      context: .
+    container_name: relayer_2
+    command: --config /config/config.json --keystore=/keys --password=123 --latest
+    volumes:
+      - ./config:/config
+      - ./keys:/keys/
